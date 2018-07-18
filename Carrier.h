@@ -7,7 +7,7 @@
  *
  * For details, see http://arduino.fisch.lu
  *
- * Depends on IRremote (https://github.com/shirriff/Arduino-IRremote) 
+ * Depends on IRremote (https://github.com/shirriff/Arduino-IRremote)
  *
  * Version
  * 0.04 > 06.01.2015 - WProgram.h --> Arduino.h (reported by Stanley <stanley@9h1lo.net>)
@@ -64,21 +64,22 @@ class Carrier
 {
 	public:
 		// fields
-		unsigned int codes[CARRIER_BUFFER_SIZE];
+		uint16_t codes[CARRIER_BUFFER_SIZE];
 		// methods
 		// setter
-		Carrier(uint8_t _mode, 
-				uint8_t _fan, 
+		Carrier(uint8_t _mode,
+				uint8_t _fan,
 				uint8_t _airFlow,
 				uint8_t _temperature,
 				uint8_t _state);
-		void setTemeprature(uint8_t _value);
+		void setTemperature(uint8_t _value);
 		void setMode(uint8_t _value);
 		void setAirFlow(uint8_t _value);
 		void setState(uint8_t _value);
 		void setFan(uint8_t _value);
+		void restoreFromCodes();
 		// getter
-		uint8_t getTemeprature();
+		uint8_t getTemperature();
 		uint8_t getMode();
 		uint8_t getAirFlow();
 		uint8_t getState();
@@ -96,6 +97,10 @@ class Carrier
 		uint8_t counter;
 		// methods
 		void setChecksum();
+		void restoreTemperatureFromCodes();
+		void restoreFanFromCodes();
+		void restoreModeFromCodes();
+		void restoreAirFlowFromCodes();
+		void restoreStateFromCodes();
 };
-
-#endif;
+#endif
