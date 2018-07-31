@@ -62,45 +62,48 @@
 // main class for manipulating a Carrier buffer
 class Carrier
 {
-	public:
-		// fields
-		uint16_t codes[CARRIER_BUFFER_SIZE];
-		// methods
-		// setter
-		Carrier(uint8_t _mode,
-				uint8_t _fan,
-				uint8_t _airFlow,
-				uint8_t _temperature,
-				uint8_t _state);
-		void setTemperature(uint8_t _value);
-		void setMode(uint8_t _value);
-		void setAirFlow(uint8_t _value);
-		void setState(uint8_t _value);
-		void setFan(uint8_t _value);
-		void restoreFromCodes();
-		// getter
-		uint8_t getTemperature();
-		uint8_t getMode();
-		uint8_t getAirFlow();
-		uint8_t getState();
-		uint8_t getFan();
-		// debugging
-		void debug();
-		void print();
-	private:
-		// fields
-		uint8_t mode;
-		uint8_t fan;
-		uint8_t airFlow;
-		uint8_t temperature;
-		uint8_t state;
-		uint8_t counter;
-		// methods
-		void setChecksum();
-		void restoreTemperatureFromCodes();
-		void restoreFanFromCodes();
-		void restoreModeFromCodes();
-		void restoreAirFlowFromCodes();
-		void restoreStateFromCodes();
+public:
+  // fields
+  uint16_t codes[CARRIER_BUFFER_SIZE];
+  // methods
+  // setter
+  Carrier(uint8_t _mode,
+          uint8_t _fan,
+          uint8_t _airFlow,
+          uint8_t _temperature,
+          uint8_t _state);
+  void setTemperature(uint8_t _value);
+  void setMode(uint8_t _value);
+  void setAirFlow(uint8_t _value);
+  void setState(uint8_t _value);
+  void setFan(uint8_t _value);
+  void restoreFillers();
+  void restoreFromCodes();
+  bool verifyCodes(int* _codes);
+  // getter
+  uint8_t getTemperature();
+  uint8_t getMode();
+  uint8_t getAirFlow();
+  uint8_t getState();
+  uint8_t getFan();
+  // debugging
+  void debug();
+  void print();
+private:
+  // fields
+  uint8_t mode;
+  uint8_t fan;
+  uint8_t airFlow;
+  uint8_t temperature;
+  uint8_t state;
+  uint8_t counter;
+  // methods
+  void setChecksum();
+  void restoreTemperatureFromCodes();
+  void restoreFanFromCodes();
+  void restoreModeFromCodes();
+  void restoreAirFlowFromCodes();
+  void restoreStateFromCodes();
+  void restoreCounterFromCodes();
 };
 #endif

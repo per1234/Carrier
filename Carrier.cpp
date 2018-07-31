@@ -16,44 +16,74 @@
  */
 void Carrier::setTemperature(uint8_t _value)
 {
-	temperature=_value;
+  temperature = _value;
 
-	if (temperature & 32) codes[39]=CODE_high;
-	else codes[39]=CODE_low;
-	if (temperature & 16) codes[41]=CODE_high;
-	else codes[41]=CODE_low;
-	if (temperature & 8) codes[43]=CODE_high;
-	else codes[43]=CODE_low;
-	if (temperature & 4) codes[45]=CODE_high;
-	else codes[45]=CODE_low;
-	if (temperature & 2) codes[47]=CODE_high;
-	else codes[47]=CODE_low;
-	if (temperature & 1) codes[49]=CODE_high;
-	else codes[49]=CODE_low;
+  if (temperature & 32) {
+    codes[39] = CODE_high;
+  } else {
+    codes[39] = CODE_low;
+  }
 
-	setChecksum();
+  if (temperature & 16) {
+    codes[41] = CODE_high;
+  } else {
+    codes[41] = CODE_low;
+  }
+
+  if (temperature & 8) {
+    codes[43] = CODE_high;
+  } else {
+    codes[43] = CODE_low;
+  }
+
+  if (temperature & 4) {
+    codes[45] = CODE_high;
+  } else {
+    codes[45] = CODE_low;
+  }
+
+  if (temperature & 2) {
+    codes[47] = CODE_high;
+  } else {
+    codes[47] = CODE_low;
+  }
+
+  if (temperature & 1) {
+    codes[49] = CODE_high;
+  } else {
+    codes[49] = CODE_low;
+  }
+
+  setChecksum();
 }
 
-void Carrier::restoreTemperatureFromCodes() {
-	temperature = 0;
-	if (codes[39] == CODE_high) {
-	  temperature += 32;
-	}
-	if (codes[41] == CODE_high) {
-	  temperature += 16;
-	}
-	if (codes[43] == CODE_high) {
-	  temperature += 8;
-	}
-	if (codes[45] == CODE_high) {
-	  temperature += 4;
-	}
-	if (codes[47] == CODE_high) {
-	  temperature += 2;
-	}
-	if (codes[49] == CODE_high) {
-	  temperature += 1;
-	}
+void Carrier::restoreTemperatureFromCodes()
+{
+  temperature = 0;
+
+  if (codes[39] == CODE_high) {
+    temperature += 32;
+  }
+
+  if (codes[41] == CODE_high) {
+    temperature += 16;
+  }
+
+  if (codes[43] == CODE_high) {
+    temperature += 8;
+  }
+
+  if (codes[45] == CODE_high) {
+    temperature += 4;
+  }
+
+  if (codes[47] == CODE_high) {
+    temperature += 2;
+  }
+
+  if (codes[49] == CODE_high) {
+    temperature += 1;
+  }
 }
 
 /**
@@ -62,29 +92,44 @@ void Carrier::restoreTemperatureFromCodes() {
  */
 void Carrier::setMode(uint8_t _value)
 {
-	mode=_value;
+  mode = _value;
 
-	if (mode & 4) codes[19]=CODE_high;
-	else codes[19]=CODE_low;
-	if (mode & 2) codes[21]=CODE_high;
-	else codes[21]=CODE_low;
-	if (mode & 1) codes[23]=CODE_high;
-	else codes[23]=CODE_low;
+  if (mode & 4) {
+    codes[19] = CODE_high;
+  } else {
+    codes[19] = CODE_low;
+  }
 
-	setChecksum();
+  if (mode & 2) {
+    codes[21] = CODE_high;
+  } else {
+    codes[21] = CODE_low;
+  }
+
+  if (mode & 1) {
+    codes[23] = CODE_high;
+  } else {
+    codes[23] = CODE_low;
+  }
+
+  setChecksum();
 }
 
-void Carrier::restoreModeFromCodes() {
-	mode = 0;
-	if (codes[19] == CODE_high) {
-	  mode += 4;
-	}
-	if (codes[21] == CODE_high) {
-	  mode += 2;
-	}
-	if (codes[23] == CODE_high) {
-	  mode += 1;
-	}
+void Carrier::restoreModeFromCodes()
+{
+  mode = 0;
+
+  if (codes[19] == CODE_high) {
+    mode += 4;
+  }
+
+  if (codes[21] == CODE_high) {
+    mode += 2;
+  }
+
+  if (codes[23] == CODE_high) {
+    mode += 1;
+  }
 }
 
 /**
@@ -93,24 +138,34 @@ void Carrier::restoreModeFromCodes() {
  */
 void Carrier::setFan(uint8_t _value)
 {
-	fan=_value;
+  fan = _value;
 
-	if (fan & 2) codes[25]=CODE_high;
-	else codes[25]=CODE_low;
-	if (fan & 1) codes[27]=CODE_high;
-	else codes[27]=CODE_low;
+  if (fan & 2) {
+    codes[25] = CODE_high;
+  } else {
+    codes[25] = CODE_low;
+  }
 
-	setChecksum();
+  if (fan & 1) {
+    codes[27] = CODE_high;
+  } else {
+    codes[27] = CODE_low;
+  }
+
+  setChecksum();
 }
 
-void Carrier::restoreFanFromCodes() {
-	fan = 1;
-	if (codes[25] == CODE_high) {
-	  fan += 2;
-	}
-	if (codes[27] == CODE_high) {
-	  fan += 1;
-	}
+void Carrier::restoreFanFromCodes()
+{
+  fan = 1;
+
+  if (codes[25] == CODE_high) {
+    fan += 2;
+  }
+
+  if (codes[27] == CODE_high) {
+    fan += 1;
+  }
 }
 
 /**
@@ -119,29 +174,44 @@ void Carrier::restoreFanFromCodes() {
  */
 void Carrier::setAirFlow(uint8_t _value)
 {
-	airFlow=_value;
+  airFlow = _value;
 
-	if (airFlow & 4) codes[29]=CODE_high;
-	else codes[29]=CODE_low;
-	if (airFlow & 2) codes[31]=CODE_high;
-	else codes[31]=CODE_low;
-	if (airFlow & 1) codes[33]=CODE_high;
-	else codes[33]=CODE_low;
+  if (airFlow & 4) {
+    codes[29] = CODE_high;
+  } else {
+    codes[29] = CODE_low;
+  }
 
-	setChecksum();
+  if (airFlow & 2) {
+    codes[31] = CODE_high;
+  } else {
+    codes[31] = CODE_low;
+  }
+
+  if (airFlow & 1) {
+    codes[33] = CODE_high;
+  } else {
+    codes[33] = CODE_low;
+  }
+
+  setChecksum();
 }
 
-void Carrier::restoreAirFlowFromCodes() {
-	airFlow = 1;
-	if (codes[29] == CODE_high) {
-	  airFlow += 4;
-	}
-	if (codes[31] == CODE_high) {
-	  airFlow += 2;
-	}
-	if (codes[33] == CODE_high) {
-	  airFlow += 1;
-	}
+void Carrier::restoreAirFlowFromCodes()
+{
+  airFlow = 1;
+
+  if (codes[29] == CODE_high) {
+    airFlow += 4;
+  }
+
+  if (codes[31] == CODE_high) {
+    airFlow += 2;
+  }
+
+  if (codes[33] == CODE_high) {
+    airFlow += 1;
+  }
 }
 
 /**
@@ -150,52 +220,58 @@ void Carrier::restoreAirFlowFromCodes() {
  */
 void Carrier::setState(uint8_t _value)
 {
-	state=_value;
+  state = _value;
 
-	if (state & 1) codes[51]=CODE_high;
-	else codes[51]=CODE_low;
+  if (state & 1) {
+    codes[51] = CODE_high;
+  } else {
+    codes[51] = CODE_low;
+  }
 
-	setChecksum();
+  setChecksum();
 }
 
-void Carrier::restoreStateFromCodes() {
-	state = 0;
-	if (codes[51] == CODE_high) {
-	  state += 1;
-	}
+void Carrier::restoreStateFromCodes()
+{
+  state = 0;
+
+  if (codes[51] == CODE_high) {
+    state += 1;
+  }
 }
 
-void Carrier::restoreFromCodes() {
-	restoreTemperatureFromCodes();
-	restoreModeFromCodes();
-	restoreFanFromCodes();
-	restoreAirFlowFromCodes();
-	restoreStateFromCodes();
+void Carrier::restoreFromCodes()
+{
+  restoreTemperatureFromCodes();
+  restoreModeFromCodes();
+  restoreFanFromCodes();
+  restoreAirFlowFromCodes();
+  restoreStateFromCodes();
 }
 
 uint8_t Carrier::getTemperature()
 {
-	return temperature;
+  return temperature;
 }
 
 uint8_t Carrier::getMode()
 {
-	return mode;
+  return mode;
 }
 
 uint8_t Carrier::getAirFlow()
 {
-	return airFlow;
+  return airFlow;
 }
 
 uint8_t Carrier::getState()
 {
-	return state;
+  return state;
 }
 
 uint8_t Carrier::getFan()
 {
-	return fan;
+  return fan;
 }
 
 
@@ -204,79 +280,124 @@ uint8_t Carrier::getFan()
  */
 void Carrier::setChecksum()
 {
-	// first do the counter part
-	counter = (counter+1) % 4;
-	if (counter & 2) codes[7]=CODE_high;
-	else codes[7]=CODE_low;
-	if (counter & 1) codes[9]=CODE_high;
-	else codes[9]=CODE_low;
+  // first do the counter part
+  counter = (counter + 1) % 4;
 
-	// next generate the checksum
-	uint16_t crc = 0;
+  if (counter & 2) {
+    codes[7] = CODE_high;
+  } else {
+    codes[7] = CODE_low;
+  }
 
-	for(uint8_t b=0;b<4;b++)
-	{
-		uint8_t block = 0;
-		for(uint8_t i=3+b*16;i<=17+b*16;i=i+2)
-		{
-			if(codes[i] > CODE_threshold) block++;
-			if (i<=15+b*16) block <<= 1;
-		}
-		crc = (crc + block) % 256;
-	}
+  if (counter & 1) {
+    codes[9] = CODE_high;
+  } else {
+    codes[9] = CODE_low;
+  }
 
-	if (crc & 128) codes[67]=CODE_high;
-	else codes[67]=CODE_low;
-	if (crc & 64) codes[69]=CODE_high;
-	else codes[69]=CODE_low;
-	if (crc & 32) codes[71]=CODE_high;
-	else codes[71]=CODE_low;
-	if (crc & 16) codes[73]=CODE_high;
-	else codes[73]=CODE_low;
-	if (crc & 8) codes[75]=CODE_high;
-	else codes[75]=CODE_low;
-	if (crc & 4) codes[77]=CODE_high;
-	else codes[77]=CODE_low;
-	if (crc & 2) codes[79]=CODE_high;
-	else codes[79]=CODE_low;
-	if (crc & 1) codes[81]=CODE_high;
-	else codes[81]=CODE_low;
+  // next generate the checksum
+  uint16_t crc = 0;
+
+  for (uint8_t b = 0; b < 4; b++) {
+    uint8_t block = 0;
+
+    for (uint8_t i = 3 + b * 16; i <= 17 + b * 16; i = i + 2) {
+      if (codes[i] > CODE_threshold) {
+        block++;
+      }
+
+      if (i <= 15 + b * 16) {
+        block <<= 1;
+      }
+    }
+
+    crc = (crc + block) % 256;
+  }
+
+  if (crc & 128) {
+    codes[67] = CODE_high;
+  } else {
+    codes[67] = CODE_low;
+  }
+
+  if (crc & 64) {
+    codes[69] = CODE_high;
+  } else {
+    codes[69] = CODE_low;
+  }
+
+  if (crc & 32) {
+    codes[71] = CODE_high;
+  } else {
+    codes[71] = CODE_low;
+  }
+
+  if (crc & 16) {
+    codes[73] = CODE_high;
+  } else {
+    codes[73] = CODE_low;
+  }
+
+  if (crc & 8) {
+    codes[75] = CODE_high;
+  } else {
+    codes[75] = CODE_low;
+  }
+
+  if (crc & 4) {
+    codes[77] = CODE_high;
+  } else {
+    codes[77] = CODE_low;
+  }
+
+  if (crc & 2) {
+    codes[79] = CODE_high;
+  } else {
+    codes[79] = CODE_low;
+  }
+
+  if (crc & 1) {
+    codes[81] = CODE_high;
+  } else {
+    codes[81] = CODE_low;
+  }
 }
 
 /**
  * initialiases a new code object
  */
 Carrier::Carrier(uint8_t _mode,
-				 uint8_t _fan,
-				 uint8_t _airFlow,
-				 uint8_t _temperature,
-				 uint8_t _state)
+                 uint8_t _fan,
+                 uint8_t _airFlow,
+                 uint8_t _temperature,
+                 uint8_t _state)
 {
-	// init the codes with the fillers and default values
-	for(uint8_t i=0;i<CARRIER_BUFFER_SIZE;i++)
-	{
-		if (i % 2 == 0)
-			codes[i]=CODE_filler;
-		else
-			codes[i]=CODE_low;
-	}
-	// set the two first ones
-	codes[0] = CODE_first;
-	codes[1] = CODE_second;
-	// set the "always high" fields
-	codes[3] = CODE_high;
-	codes[5] = CODE_high;
-	codes[53] = CODE_high;
+  // init the codes with the fillers and default values
+  for (uint8_t i = 0; i < CARRIER_BUFFER_SIZE; i++) {
+    if (i % 2 == 0) {
+      codes[i] = CODE_filler;
+    } else {
+      codes[i] = CODE_low;
+    }
+  }
 
-	// init the counter
-	counter = 0;
+  // set the two first ones
+  codes[0] = CODE_first;
+  codes[1] = CODE_second;
+  // set the "always high" fields
+  codes[3] = CODE_high;
+  codes[5] = CODE_high;
+  codes[53] = CODE_high;
 
-	// set fields
-	setMode(_mode);
-	setFan(_fan);
-	setAirFlow(_airFlow);
-	setTemperature(_temperature);
-	setState(_state);
+  // init the counter
+  counter = 0;
+
+  // set fields
+  setMode(_mode);
+  setFan(_fan);
+  setAirFlow(_airFlow);
+  setTemperature(_temperature);
+  setState(_state);
 }
 
 /**
@@ -284,27 +405,26 @@ Carrier::Carrier(uint8_t _mode,
  */
 void Carrier::debug()
 {
-	setChecksum();
+  setChecksum();
 
-	for(uint8_t i=0;i<CARRIER_BUFFER_SIZE;i++)
-	{
-		if (i % 2 == 1)
-		{
-			/**/
-			//Serial.print(i,DEC);
-			//Serial.print(" = ");
-			Serial.print(codes[i],DEC);
-			//Serial.println("");
-			/*
-			if(codes[i]>CODE_threshold)
-				Serial.print(1);
-			else
-				Serial.print(0);
-			/**/
-			Serial.print(",");
-		}
-	}
-	//Serial.println("");
+  for (uint8_t i = 0; i < CARRIER_BUFFER_SIZE; i++) {
+    if (i % 2 == 1) {
+      /**/
+      //Serial.print(i,DEC);
+      //Serial.print(" = ");
+      Serial.print(codes[i], DEC);
+      //Serial.println("");
+      /*
+      if(codes[i]>CODE_threshold)
+      	Serial.print(1);
+      else
+      	Serial.print(0);
+      /**/
+      Serial.print(",");
+    }
+  }
+
+  //Serial.println("");
 }
 
 /**
@@ -312,23 +432,34 @@ void Carrier::debug()
  */
 void Carrier::print()
 {
-	Serial.print("State = ");
-	if (state==STATE_on) Serial.println("on");
-	else Serial.println("off");
+  Serial.print("State = ");
 
-	Serial.print("Mode = ");
-	if (mode==MODE_auto) Serial.println("auto");
-	else if (mode==MODE_rain) Serial.println("rain");
-	else if (mode==MODE_cold) Serial.println("cold");
-	else if (mode==MODE_wind) Serial.println("wind");
-	else Serial.println("warm");
+  if (state == STATE_on) {
+    Serial.println("on");
+  } else {
+    Serial.println("off");
+  }
 
-	Serial.print("Temperature = ");
-	Serial.println(temperature,DEC);
+  Serial.print("Mode = ");
 
-	Serial.print("Fan = ");
-	Serial.println(fan,DEC);
+  if (mode == MODE_auto) {
+    Serial.println("auto");
+  } else if (mode == MODE_rain) {
+    Serial.println("rain");
+  } else if (mode == MODE_cold) {
+    Serial.println("cold");
+  } else if (mode == MODE_wind) {
+    Serial.println("wind");
+  } else {
+    Serial.println("warm");
+  }
 
-	Serial.print("Air-flow = ");
-	Serial.println(airFlow,DEC);
+  Serial.print("Temperature = ");
+  Serial.println(temperature, DEC);
+
+  Serial.print("Fan = ");
+  Serial.println(fan, DEC);
+
+  Serial.print("Air-flow = ");
+  Serial.println(airFlow, DEC);
 }
