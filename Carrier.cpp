@@ -1,20 +1,21 @@
 /*
- * Carrier
- * Version 0.04 January, 2015
- * Copyright 2011 Bob Fisch
- *
- * Library to generate IR codes for a Carrier air conditionner.
- *
- * For details, see http://arduino.fisch.lu
- */
+   Carrier
+   Version 0.04 January, 2015
+   Copyright 2011 Bob Fisch
+   Version 0.1 Juli, 2018 - Michiel Roding
+
+   Library to generate IR codes for a Carrier air conditionner.
+
+   For details, see http://arduino.fisch.lu
+*/
 
 #include "Carrier.h"
 
 /**
- * set the given temperature and updates the codes
- * @param	_value	the new value [17..32]
- */
-void Carrier::setTemperature(uint8_t _value)
+   set the given temperature and updates the codes
+   @param  _value  the new value [17..32]
+*/
+void Carrier::setTemperature(uint8_t _value )
 {
   temperature = _value;
 
@@ -86,11 +87,16 @@ void Carrier::restoreTemperatureFromCodes()
   }
 }
 
+bool Carrier::verifyCodes(int* _codes )
+{
+  return true;
+}
+
 /**
- * set the given mode and updates the codes
- * @param	_value	the new mode {MODE_auto,MODE_cold,MODE_warm,MODE_wind,MODE_rain}
- */
-void Carrier::setMode(uint8_t _value)
+   set the given mode and updates the codes
+   @param _value  the new mode {MODE_auto,MODE_cold,MODE_warm,MODE_wind,MODE_rain}
+*/
+void Carrier::setMode(uint8_t _value )
 {
   mode = _value;
 
@@ -133,10 +139,10 @@ void Carrier::restoreModeFromCodes()
 }
 
 /**
- * set the given fan and updates the codes
- * @param	_value	the new fan speed {FAN_1,FAN_2,FAN_3,FAN_4}
- */
-void Carrier::setFan(uint8_t _value)
+   set the given fan and updates the codes
+   @param _value  the new fan speed {FAN_1,FAN_2,FAN_3,FAN_4}
+*/
+void Carrier::setFan(uint8_t _value )
 {
   fan = _value;
 
@@ -169,10 +175,10 @@ void Carrier::restoreFanFromCodes()
 }
 
 /**
- * set the given air flow and updates the codes
- * @param	_value	the new air flow direction {AIRFLOW_dir_1,AIRFLOW_dir_2,AIRFLOW_dir_3,AIRFLOW_dir_4,AIRFLOW_dir_5,AIRFLOW_dir_6,AIRFLOW_change,AIRFLOW_open}
- */
-void Carrier::setAirFlow(uint8_t _value)
+   set the given air flow and updates the codes
+   @param _value  the new air flow direction {AIRFLOW_dir_1,AIRFLOW_dir_2,AIRFLOW_dir_3,AIRFLOW_dir_4,AIRFLOW_dir_5,AIRFLOW_dir_6,AIRFLOW_change,AIRFLOW_open}
+*/
+void Carrier::setAirFlow(uint8_t _value )
 {
   airFlow = _value;
 
@@ -215,10 +221,10 @@ void Carrier::restoreAirFlowFromCodes()
 }
 
 /**
- * set the given state and updates the codes
- * @param	_value	the new state {STATE_on,STATE_off}
- */
-void Carrier::setState(uint8_t _value)
+   set the given state and updates the codes
+   @param _value  the new state {STATE_on,STATE_off}
+*/
+void Carrier::setState( uint8_t _value )
 {
   state = _value;
 
@@ -240,6 +246,21 @@ void Carrier::restoreStateFromCodes()
   }
 }
 
+void Carrier::restoreCounterFromCodes()
+{
+  counter = 0;
+
+  if (codes[7] == CODE_high) {
+    counter += 2;
+  }
+
+  if (codes[9] == CODE_high) {
+    counter += 1;
+  }
+
+  counter--;
+}
+
 void Carrier::restoreFromCodes()
 {
   restoreTemperatureFromCodes();
@@ -247,6 +268,9 @@ void Carrier::restoreFromCodes()
   restoreFanFromCodes();
   restoreAirFlowFromCodes();
   restoreStateFromCodes();
+  restoreCounterFromCodes();
+
+  setChecksum();
 }
 
 uint8_t Carrier::getTemperature()
@@ -274,14 +298,13 @@ uint8_t Carrier::getFan()
   return fan;
 }
 
-
 /**
- * increments the counter, calculates the checksum and updates the codes
- */
+   increments the counter, calculates the checksum and updates the codes
+*/
 void Carrier::setChecksum()
 {
   // first do the counter part
-  counter = (counter + 1) % 4;
+  counter =(counter + 1)% 4;
 
   if (counter & 2) {
     codes[7] = CODE_high;
@@ -298,10 +321,10 @@ void Carrier::setChecksum()
   // next generate the checksum
   uint16_t crc = 0;
 
-  for (uint8_t b = 0; b < 4; b++) {
+  for(uint8_t b = 0; b < 4; b++) {
     uint8_t block = 0;
 
-    for (uint8_t i = 3 + b * 16; i <= 17 + b * 16; i = i + 2) {
+    for(uint8_t i = 3 + b * 16; i <= 17 + b * 16; i = i + 2) {
       if (codes[i] > CODE_threshold) {
         block++;
       }
@@ -311,7 +334,7 @@ void Carrier::setChecksum()
       }
     }
 
-    crc = (crc + block) % 256;
+    crc =(crc + block)% 256;
   }
 
   if (crc & 128) {
@@ -363,21 +386,12 @@ void Carrier::setChecksum()
   }
 }
 
-/**
- * initialiases a new code object
- */
-Carrier::Carrier(uint8_t _mode,
-                 uint8_t _fan,
-                 uint8_t _airFlow,
-                 uint8_t _temperature,
-                 uint8_t _state)
+void Carrier::restoreFillers()
 {
   // init the codes with the fillers and default values
   for (uint8_t i = 0; i < CARRIER_BUFFER_SIZE; i++) {
     if (i % 2 == 0) {
       codes[i] = CODE_filler;
-    } else {
-      codes[i] = CODE_low;
     }
   }
 
@@ -388,78 +402,68 @@ Carrier::Carrier(uint8_t _mode,
   codes[3] = CODE_high;
   codes[5] = CODE_high;
   codes[53] = CODE_high;
+}
+
+/**
+   initialiases a new code object
+*/
+Carrier::Carrier(uint8_t _mode,
+                   uint8_t _fan,
+                   uint8_t _airFlow,
+                   uint8_t _temperature,
+                   uint8_t _state )
+{
+  // init the codes with the fillers and default values
+  for (uint8_t i = 0; i < CARRIER_BUFFER_SIZE; i++) {
+    codes[i] = CODE_low;
+  }
+
+  restoreFillers();
 
   // init the counter
   counter = 0;
 
   // set fields
-  setMode(_mode);
-  setFan(_fan);
-  setAirFlow(_airFlow);
-  setTemperature(_temperature);
-  setState(_state);
+  setMode(_mode );
+  setFan(_fan );
+  setAirFlow(_airFlow );
+  setTemperature(_temperature );
+  setState(_state );
 }
 
 /**
- * gives me whatever debug output I needed dureing development
- */
-void Carrier::debug()
-{
-  setChecksum();
-
-  for (uint8_t i = 0; i < CARRIER_BUFFER_SIZE; i++) {
-    if (i % 2 == 1) {
-      /**/
-      //Serial.print(i,DEC);
-      //Serial.print(" = ");
-      Serial.print(codes[i], DEC);
-      //Serial.println("");
-      /*
-      if(codes[i]>CODE_threshold)
-      	Serial.print(1);
-      else
-      	Serial.print(0);
-      /**/
-      Serial.print(",");
-    }
-  }
-
-  //Serial.println("");
-}
-
-/**
- * prints the actul state of the object on the serial line
- */
+   prints the actul state of the object on the serial line
+*/
 void Carrier::print()
 {
-  Serial.print("State = ");
+  Serial.print("State = " );
 
   if (state == STATE_on) {
-    Serial.println("on");
+    Serial.println("on" );
   } else {
-    Serial.println("off");
+    Serial.println("off" );
   }
 
-  Serial.print("Mode = ");
+  Serial.print("Mode = " );
 
   if (mode == MODE_auto) {
-    Serial.println("auto");
+    Serial.println("auto" );
   } else if (mode == MODE_rain) {
-    Serial.println("rain");
+    Serial.println("rain" );
   } else if (mode == MODE_cold) {
-    Serial.println("cold");
+    Serial.println("cold" );
   } else if (mode == MODE_wind) {
-    Serial.println("wind");
+    Serial.println("wind" );
   } else {
-    Serial.println("warm");
+    Serial.println("warm" );
   }
 
-  Serial.print("Temperature = ");
-  Serial.println(temperature, DEC);
+  Serial.print("Temperature = " );
+  Serial.println(temperature, DEC );
 
-  Serial.print("Fan = ");
-  Serial.println(fan, DEC);
+  Serial.print("Fan = " );
+  Serial.println(fan, DEC );
 
-  Serial.print("Air-flow = ");
-  Serial.println(airFlow, DEC);
+  Serial.print("Air-flow = " );
+  Serial.println(airFlow, DEC );
 }
